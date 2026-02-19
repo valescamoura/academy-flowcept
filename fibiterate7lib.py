@@ -3,6 +3,7 @@
 ### ==== pretend this bit is in the academy standard library ==== ###
 
 import asyncio
+import os
 from academy.agent import Agent, action
 from academy.manager import Manager
 from academy.exchange import LocalExchangeFactory, RedisExchangeFactory
@@ -20,13 +21,16 @@ class GeneratorAgent(Agent):
     self.g = g
 
   @action
-  async def __anext__(self):
+  async def next_item(self):
     logger.info(f"in agent-side anext on pid {os.getpid()}")
     # i think this stuff is hanging because the agent process from
     # the above manager never terminates. I'm not sure what the right
     # pattern for that should be.
     logger.info("Awaiting a new value from generator", extra={"academy.agent_id": self.agent_id})
-    return await self.g.__anext__()
+    try:
+      return {"done": False, "value": await self.g.__anext__()}
+    except StopAsyncIteration:
+      return {"done": True, "value": None}
 
 
 # this is to make a Handle look right for `async for`, which wants
@@ -42,7 +46,10 @@ class IteratorShim:
         return self
 
     async def __anext__(self):
-        return await self.handle.__anext__()
+        item = await self.handle.next_item()
+        if item["done"]:
+            raise StopAsyncIteration
+        return item["value"]
 
 ### ==== pretend this bit is your user code ==== ###
 

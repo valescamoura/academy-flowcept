@@ -4,6 +4,7 @@
 
 import asyncio
 import os
+import sys
 from academy.agent import Agent, action
 from academy.manager import Manager
 from academy.exchange import LocalExchangeFactory, RedisExchangeFactory
@@ -21,12 +22,23 @@ from academy.logging import log_context
 import logging
 logger = logging.getLogger(__name__)
 
+
+def _ensure_project_on_pythonpath() -> None:
+  project_dir = os.path.dirname(os.path.abspath(__file__))
+  current = os.environ.get("PYTHONPATH", "")
+  paths = [p for p in current.split(os.pathsep) if p]
+  if project_dir not in paths:
+    os.environ["PYTHONPATH"] = os.pathsep.join([project_dir] + paths)
+  if project_dir not in sys.path:
+    sys.path.insert(0, project_dir)
+
 async def main():
 
   from academy.logging.configs.console import ConsoleLogging
   from academy.logging.configs.multi import MultiLogging
 
   lc = FlowceptLogging()
+  _ensure_project_on_pythonpath()
 
   # initialize logging locally, until the end of the process
   with log_context(MultiLogging([lc, ConsoleLogging(level=logging.DEBUG, extra=2)])):
