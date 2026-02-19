@@ -13,6 +13,12 @@ Get flowcept
 pip install flowcept==0.9.20
 ```
 
+Get parsl (because this uses Parsl-based executors to add some process complexity)
+
+```
+pip install parsl==2026.02.16
+```
+
 Get redis (because this uses the redis-based exchange)
 
 ```
