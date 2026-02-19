@@ -53,7 +53,7 @@ class FlowceptHandler(logging.Handler):
               ft = FlowceptTask(task_id = action_invocation,
                                 activity_id = record.__dict__["academy.action"])
               self.flowcept_tasks[action_invocation] = ft
-            case "completed":
+            case "success":
               ft = self.flowcept_tasks[action_invocation]
               ft.end()
               del self.flowcept_tasks[action_invocation]

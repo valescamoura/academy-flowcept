@@ -29,7 +29,7 @@ async def main():
   lc = FlowceptLogging()
 
   # initialize logging locally, until the end of the process
-  with log_context(MultiLogging([lc, ConsoleLogging(level=logging.DEBUG)])):
+  with log_context(MultiLogging([lc, ConsoleLogging(level=logging.DEBUG, extra=2)])):
 
    logger.info(f"start, main process is pid {os.getpid()}")
 
