@@ -34,7 +34,6 @@ redis-server &
 Run demo - this is a script that runs agent based fibonacci generation inside a Parsl-based agent, so that there are multiple processes and agents involved.
 
 ```
-export PYTHONPATH=$(pwd)
 python3 fibiterate7.py
 ```
 
