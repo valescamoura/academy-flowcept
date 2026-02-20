@@ -4,7 +4,7 @@ academy observability / flowcept prototype
 Get a reasonable commit from the academy log config prototype branch:
 
 ```
-pip install git+https://github.com/academy-agents/academy@c2ad965404f45a2c7918fd457e460b786800113b
+pip install git+https://github.com/academy-agents/academy@13fec5e10daf8006d6966cc4897e2ca66831ab84
 ```
 
 Get flowcept
