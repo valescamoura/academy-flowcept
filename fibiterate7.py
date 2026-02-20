@@ -35,12 +35,13 @@ def _ensure_project_on_pythonpath() -> None:
 async def main():
 
   from academy.logging.configs.console import ConsoleLogging
+  from academy.logging.configs.jsonpool import JSONPoolLogging
   from academy.logging.configs.multi import MultiLogging
 
   flc = FlowceptLogging()
   _ensure_project_on_pythonpath()
 
-  lc = MultiLogging([flc, ConsoleLogging(level=logging.DEBUG, extra=2)])
+  lc = MultiLogging([flc, ConsoleLogging(level=logging.DEBUG, extra=2), JSONPoolLogging()])
 
   # initialize logging locally, until the end of the process
   with log_context(lc):
