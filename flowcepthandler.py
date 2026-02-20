@@ -8,6 +8,7 @@
 # i create an object and send an end message.
 
 import logging
+import sys
 import uuid
 
 from academy.logging import LogConfig
@@ -21,13 +22,13 @@ class FlowceptLogging(LogConfig):
         self.workflow_id = uuid.uuid4()
 
     def init_logging(self):
-
+        print("**** FlowceptLogging init_logging")
         flowcept = Flowcept(workflow_name=str(self.workflow_id))
         flowcept.start()
 
         h = FlowceptHandler()
         h.setLevel(logging.DEBUG)
-        action_logger = logging.getLogger("academy.handle")
+        action_logger = logging.getLogger("academy")
         action_logger.addHandler(h)
         action_logger.level = min(action_logger.level, h.level)
 
@@ -47,6 +48,7 @@ class FlowceptHandler(logging.Handler):
          and "academy.action_state" in record.__dict__:
           action_invocation = record.__dict__["academy.action_invocation"]
           print("*" * 79)
+          sys.stdout.flush()
           match record.__dict__["academy.action_state"]:
             case "start":
               assert action_invocation not in self.flowcept_tasks
@@ -57,4 +59,7 @@ class FlowceptHandler(logging.Handler):
               ft = self.flowcept_tasks[action_invocation]
               ft.end()
               del self.flowcept_tasks[action_invocation]
+            case x:
+              print(f"+++++++++++ Unknown action state: {x}")
+              sys.stdout.flush()
 

@@ -37,11 +37,13 @@ async def main():
   from academy.logging.configs.console import ConsoleLogging
   from academy.logging.configs.multi import MultiLogging
 
-  lc = FlowceptLogging()
+  flc = FlowceptLogging()
   _ensure_project_on_pythonpath()
 
+  lc = MultiLogging([flc, ConsoleLogging(level=logging.DEBUG, extra=2)])
+
   # initialize logging locally, until the end of the process
-  with log_context(MultiLogging([lc, ConsoleLogging(level=logging.DEBUG, extra=2)])):
+  with log_context(lc):
 
    logger.info(f"start, main process is pid {os.getpid()}")
 
