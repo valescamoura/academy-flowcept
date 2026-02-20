@@ -1,4 +1,4 @@
-
+import json
 # academy => flowcept log handler
 
 # take a couple of relevant academy extras messages and turn them into flowcept API calls.
@@ -15,15 +15,16 @@ from academy.logging import LogConfig
 
 from flowcept import Flowcept, FlowceptTask
 
+
 class FlowceptLogging(LogConfig):
 
     def __init__(self):
         super().__init__()
-        self.workflow_id = uuid.uuid4()
+        #self.workflow_id = uuid.uuid4()
 
     def init_logging(self):
         print("**** FlowceptLogging init_logging")
-        flowcept = Flowcept(workflow_name=str(self.workflow_id))
+        flowcept = Flowcept()
         flowcept.start()
 
         h = FlowceptHandler()
@@ -52,14 +53,29 @@ class FlowceptHandler(logging.Handler):
           match record.__dict__["academy.action_state"]:
             case "start":
               assert action_invocation not in self.flowcept_tasks
+
+              agent_id = str(record.__dict__['academy.agent_id'].uid)
+              args = record.__dict__.get("academy.action_args")
+              kwargs = record.__dict__.get("academy.action_kwargs")
+              used = {}
+              if args:
+                  used["args"] = args
+              if kwargs:
+                  used.update(kwargs)
+
+              used = used or None
               ft = FlowceptTask(task_id = action_invocation,
-                                activity_id = record.__dict__["academy.action"])
+                                activity_id = record.__dict__["academy.action"],
+                                used=used,
+                                agent_id=agent_id)
               self.flowcept_tasks[action_invocation] = ft
             case "success":
               ft = self.flowcept_tasks[action_invocation]
-              ft.end()
+              result = record.__dict__.get("academy.result")
+              ft.end(generated=result)
               del self.flowcept_tasks[action_invocation]
             case x:
+              # TODO: add handlers for 'academy.action_state': 'exception', 'canceled'
               print(f"+++++++++++ Unknown action state: {x}")
               sys.stdout.flush()
 

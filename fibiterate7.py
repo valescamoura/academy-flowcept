@@ -58,7 +58,7 @@ async def main():
      a = FibonacciLauncher()
      ah = await m.launch(a, log_config=lc)
 
-     iteratorh = await ah.calc_fibs(0, 1)
+     iteratorh = await ah.calc_fibs(init_a=0, init_b=1)
      assert iteratorh is not None
      logger.info(f"got iterator handle {iteratorh}")
 

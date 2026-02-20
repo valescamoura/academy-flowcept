@@ -38,3 +38,10 @@ python3 fibiterate7.py
 ```
 
 Look in `flowcept_buffer.jsonl` for flowcept logs.
+
+Optionally, run:
+
+`flowcept --generate-report --input-path flowcept_buffer.jsonl`
+
+And open the `PROVENANCE_CARD.md`
+

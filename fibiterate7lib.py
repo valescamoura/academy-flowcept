@@ -68,7 +68,7 @@ async def fibs_generator(init_a, init_b):
   a = init_a
   b = init_b
   while b < 1000:
-    yield f"b={b} computed on pid {os.getpid()}"
+    yield b, f"b={b} computed on pid {os.getpid()}"
     t = a+b
     a = b
     b = t
