@@ -1,10 +1,10 @@
 academy observability / flowcept prototype
 ==========================================
 
-Get a reasonable commit from the academy log config prototype branch:
+Get a recent version of Academy: (for example, this version on the `main` branch)
 
 ```
-pip install git+https://github.com/academy-agents/academy@66b3ac795ce0ea82a57ac2db790a18f3ea6b93c0
+pip install git+https://github.com/academy-agents/academy@1c9dd5bbe030e562101a30dd4dfa1b5b0dffff4d
 ```
 
 Get flowcept
@@ -16,7 +16,7 @@ pip install flowcept==0.9.20
 Get parsl (because this uses Parsl-based executors to add some process complexity)
 
 ```
-pip install parsl==2026.02.16
+pip install 'parsl[monitoring]==2026.04.27'
 ```
 
 Get redis (because this uses the redis-based exchange)

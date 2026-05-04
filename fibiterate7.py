@@ -17,7 +17,7 @@ from fibiterate7lib import FibonacciLauncher, IteratorShim
 
 from flowcepthandler import FlowceptLogging
 
-from academy.logging import log_context
+from academy.logging.helpers import log_context
 
 import logging
 logger = logging.getLogger(__name__)

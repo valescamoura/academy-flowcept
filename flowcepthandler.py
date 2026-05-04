@@ -11,7 +11,7 @@ import logging
 import sys
 import uuid
 
-from academy.logging import LogConfig
+from academy.logging.configs.base import LogConfig
 
 from flowcept import Flowcept, FlowceptTask
 
