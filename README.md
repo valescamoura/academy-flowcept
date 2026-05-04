@@ -10,7 +10,7 @@ pip install git+https://github.com/academy-agents/academy@1c9dd5bbe030e562101a30
 Get flowcept
 
 ```
-pip install flowcept==0.9.20
+pip install flowcept==0.10.4
 ```
 
 Get parsl (because this uses Parsl-based executors to add some process complexity)
