@@ -45,9 +45,9 @@ class FlowceptHandler(logging.Handler):
       self.flowcept_tasks: dict[str, FlowceptTask] = {}
 
   def emit(self, record):
-      if "academy.action_invocation" in record.__dict__ \
+      if "academy.action_tag" in record.__dict__ \
          and "academy.action_state" in record.__dict__:
-          action_invocation = record.__dict__["academy.action_invocation"]
+          action_invocation = record.__dict__["academy.action_tag"]
           print("*" * 79)
           sys.stdout.flush()
           match record.__dict__["academy.action_state"]:
