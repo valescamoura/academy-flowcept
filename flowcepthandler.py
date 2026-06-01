@@ -64,7 +64,7 @@ class FlowceptHandler(logging.Handler):
                   used.update(kwargs)
 
               used = used or None
-              ft = FlowceptTask(task_id = action_invocation,
+              ft = FlowceptTask(task_id = str(action_invocation),
                                 activity_id = record.__dict__["academy.action"],
                                 used=used,
                                 agent_id=agent_id)
@@ -72,7 +72,16 @@ class FlowceptHandler(logging.Handler):
             case "success":
               ft = self.flowcept_tasks[action_invocation]
               result = record.__dict__.get("academy.result")
-              ft.end(generated=result)
+              def json_safe(obj):
+                try:
+                    obj = vars(obj)
+                except TypeError:
+                    pass
+
+                return json.loads(json.dumps(obj, default=str))
+
+              safe_result = json_safe(result)
+              ft.end(generated=safe_result)
               del self.flowcept_tasks[action_invocation]
             case x:
               # TODO: add handlers for 'academy.action_state': 'exception', 'canceled'
