@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "academy-flowcept"
+version = "0.1.0"
+description = "Flowcept logging integration for Academy agents."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "academy-py",
+  "flowcept",
+]
+
+[tool.setuptools]
+py-modules = ["flowcepthandler"]
