@@ -48,6 +48,17 @@ def _is_agent(entity: Any) -> bool:
     return getattr(entity, "role", None) == "agent"
 
 
+def _task_subtype(activity_id: str) -> str:
+    lifecycle_actions = {
+        "ping",
+        "shutdown",
+        "agent_startup",
+        "agent_shutdown",
+        "startup",
+    }
+    return "academy_lifecycle" if activity_id in lifecycle_actions else "academy_action"
+
+
 @dataclass
 class _PendingAction:
     activity_id: str
@@ -181,7 +192,7 @@ class FlowceptHandler(logging.Handler):
                 agent_id=_entity_id(pending.destination),
                 source_agent_id=source_id,
                 used=pending.used,
-                subtype="academy_action",
+                subtype=_task_subtype(pending.activity_id),
                 started_at=pending.started_at,
                 custom_metadata={"framework": "academy", "capture_method": "event_log"},
             )

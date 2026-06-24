@@ -111,5 +111,33 @@ class FlowceptHandlerTest(unittest.TestCase):
         self.assertIsNone(FakeTask.created[0].kwargs["source_agent_id"])
         self.assertEqual(FakeTask.created[0].ended["generated"], {"result": "done"})
 
+    def test_marks_ping_as_lifecycle(self):
+        destination = FakeEntity("training-worker")
+        handler = flowcepthandler.FlowceptHandler("workflow-1", "campaign-1")
+
+        handler.emit(
+            action_record(
+                "start",
+                **{"academy.action": "ping", "academy.agent_id": destination},
+            )
+        )
+        handler.emit(action_record("success", **{"academy.result": "pong"}))
+
+        self.assertEqual(FakeTask.created[0].kwargs["subtype"], "academy_lifecycle")
+
+    def test_marks_shutdown_as_lifecycle(self):
+        destination = FakeEntity("training-worker")
+        handler = flowcepthandler.FlowceptHandler("workflow-1", "campaign-1")
+
+        handler.emit(
+            action_record(
+                "start",
+                **{"academy.action": "shutdown", "academy.agent_id": destination},
+            )
+        )
+        handler.emit(action_record("success", **{"academy.result": None}))
+
+        self.assertEqual(FakeTask.created[0].kwargs["subtype"], "academy_lifecycle")
+
 if __name__ == "__main__":
     unittest.main()
